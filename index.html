@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flappy Pig</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css  ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -321,7 +321,7 @@
         }
         
         .instructions-list li {
-            margin: 1 0;
+            margin: 12px 0;
             position: relative;
             padding-left: 30px;
             font-size: 1.05rem;
@@ -556,8 +556,8 @@
         let pig = {
             x: 100,
             y: canvas.height / 2,
-            width: 50,
-            height: 35,
+            width: 32,
+            height: 32,
             velocity: 0,
             gravity: 0.6,
             jumpPower: -10,
@@ -606,80 +606,58 @@
             });
         }
         
-        // Draw a REAL PIG (unmistakable pig design)
+        // Draw a PIXEL-ART PIG (like your screenshot)
         function drawPig() {
-            ctx.save();
-            ctx.translate(pig.x, pig.y);
+            // Set pixel size for pixel art (8x8 pixels)
+            const pixelSize = 4;
+            const pigX = Math.floor(pig.x - pig.width/2);
+            const pigY = Math.floor(pig.y - pig.height/2);
             
-            // Apply rotation based on velocity
-            pig.rotation = pig.velocity * 0.1;
-            ctx.rotate(pig.rotation);
+            // Draw pink body (16x16 pixels)
+            ctx.fillStyle = '#FFB6C1';
+            for (let y = 0; y < 16; y++) {
+                for (let x = 0; x < 16; x++) {
+                    // Body shape (solid square)
+                    if (x >= 2 && x <= 13 && y >= 2 && y <= 13) {
+                        ctx.fillRect(pigX + x * pixelSize, pigY + y * pixelSize, pixelSize, pixelSize);
+                    }
+                }
+            }
             
-            // === PIG BODY (round and chubby) ===
-            ctx.fillStyle = '#FFB6C1'; // Light pink
-            ctx.beginPath();
-            ctx.ellipse(0, 0, 25, 20, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // === SNOUT (distinctive pig snout) ===
-            ctx.fillStyle = '#FF69B4'; // Medium pink
-            ctx.beginPath();
-            ctx.ellipse(18, 0, 12, 10, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // === NOSTRILS (two distinct nostrils) ===
-            ctx.fillStyle = '#FF1493'; // Dark pink
-            ctx.beginPath();
-            ctx.ellipse(14, -2, 3, 2.5, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(20, -2, 3, 2.5, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // === EYES (pig-like eyes) ===
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.ellipse(-5, -8, 6, 5, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(8, -8, 6, 5, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
+            // Draw eyes (black)
             ctx.fillStyle = 'black';
-            ctx.beginPath();
-            ctx.ellipse(-5, -8, 2.5, 2, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(8, -8, 2.5, 2, 0, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.fillRect(pigX + 5 * pixelSize, pigY + 5 * pixelSize, pixelSize, pixelSize);
+            ctx.fillRect(pigX + 10 * pixelSize, pigY + 5 * pixelSize, pixelSize, pixelSize);
             
-            // === EARS (floppy pig ears) ===
+            // Draw snout (pink)
             ctx.fillStyle = '#FF69B4';
-            // Left ear (back)
-            ctx.beginPath();
-            ctx.ellipse(-10, -15, 10, 18, -0.4, 0, Math.PI * 1.6);
-            ctx.fill();
-            // Right ear (front)
-            ctx.beginPath();
-            ctx.ellipse(10, -15, 10, 18, 0.4, 0, Math.PI * 1.6);
-            ctx.fill();
+            ctx.fillRect(pigX + 6 * pixelSize, pigY + 10 * pixelSize, pixelSize, pixelSize);
+            ctx.fillRect(pigX + 7 * pixelSize, pigY + 10 * pixelSize, pixelSize, pixelSize);
+            ctx.fillRect(pigX + 8 * pixelSize, pigY + 10 * pixelSize, pixelSize, pixelSize);
+            ctx.fillRect(pigX + 9 * pixelSize, pigY + 10 * pixelSize, pixelSize, pixelSize);
             
-            // === TAIL (CURLY TAIL - most important feature!)
-            ctx.strokeStyle = '#FF69B4';
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            ctx.beginPath();
-            // Start from body (left side)
-            ctx.moveTo(-15, 0);
-            // First curve
-            ctx.bezierCurveTo(-25, -10, -22, -25, -15, -30);
-            // Second curve (the curl)
-            ctx.bezierCurveTo(-8, -35, 0, -30, 5, -25);
-            // Third curve (the tail end)
-            ctx.bezierCurveTo(10, -20, 12, -10, 10, -5);
-            ctx.stroke();
+            // Draw nostrils (dark pink)
+            ctx.fillStyle = '#FF1493';
+            ctx.fillRect(pigX + 7 * pixelSize, pigY + 11 * pixelSize, pixelSize, pixelSize);
+            ctx.fillRect(pigX + 8 * pixelSize, pigY + 11 * pixelSize, pixelSize, pixelSize);
             
-            ctx.restore();
+            // Draw ears (pink)
+            ctx.fillStyle = '#FF69B4';
+            // Left ear
+            ctx.fillRect(pigX + 2 * pixelSize, pigY + 2 * pixelSize, pixelSize, pixelSize);
+            ctx.fillRect(pigX + 3 * pixelSize, pigY + 2 * pixelSize, pixelSize, pixelSize);
+            ctx.fillRect(pigX + 2 * pixelSize, pigY + 3 * pixelSize, pixelSize, pixelSize);
+            
+            // Right ear
+            ctx.fillRect(pigX + 12 * pixelSize, pigY + 2 * pixelSize, pixelSize, pixelSize);
+            ctx.fillRect(pigX + 13 * pixelSize, pigY + 2 * pixelSize, pixelSize, pixelSize);
+            ctx.fillRect(pigX + 12 * pixelSize, pigY + 3 * pixelSize, pixelSize, pixelSize);
+            
+            // Draw tail (pink)
+            ctx.fillStyle = '#FF69B4';
+            ctx.fillRect(pigX + 14 * pixelSize, pigY + 7 * pixelSize, pixelSize, pixelSize);
+            ctx.fillRect(pigX + 14 * pixelSize, pigY + 8 * pixelSize, pixelSize, pixelSize);
+            ctx.fillRect(pigX + 15 * pixelSize, pigY + 8 * pixelSize, pixelSize, pixelSize);
         }
         
         // Draw pipes with improved graphics
@@ -703,7 +681,7 @@
                 
                 // Pipe stripes
                 ctx.fillStyle = '#1E7D1E';
-                for (let y = 20; < pipe.topHeight; y += 30) {
+                for (let y = 20; y < pipe.topHeight; y += 30) {
                     ctx.fillRect(pipe.x + 5, y, pipe.width - 10, 5);
                 }
                 for (let y = pipe.bottomY + 20; y < canvas.height; y += 30) {
@@ -970,7 +948,7 @@
             // Draw ground
             drawGround();
             
-            // Draw pig
+            // Draw pig (pixel art)
             drawPig();
         }
         
