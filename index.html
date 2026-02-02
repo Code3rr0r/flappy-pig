@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flappy Pig</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css  ">
     <style>
         * {
             margin: 0;
@@ -606,14 +606,17 @@
             });
         }
         
-        // Draw pig with improved graphics
+        // Draw pig facing RIGHT (flipped version)
         function drawPig() {
             ctx.save();
             ctx.translate(pig.x, pig.y);
             
-            // Calculate rotation based on velocity
+            // FLIP HORIZONTALLY to face right
+            ctx.scale(-1, 1);
+            
+            // Calculate rotation based on velocity (negated for flip)
             pig.rotation = pig.velocity * 0.1;
-            ctx.rotate(pig.rotation);
+            ctx.rotate(-pig.rotation);
             
             // Pig body
             ctx.fillStyle = '#FFB6C1';
@@ -621,45 +624,45 @@
             ctx.ellipse(0, 0, pig.width/2, pig.height/2, 0, 0, Math.PI * 2);
             ctx.fill();
             
-            // Pig snout
+            // Pig snout (now on RIGHT side due to flip)
             ctx.fillStyle = '#FF69B4';
             ctx.beginPath();
-            ctx.ellipse(15, 5, 18, 12, 0, 0, Math.PI * 2);
+            ctx.ellipse(-15, 5, 18, 12, 0, 0, Math.PI * 2);
             ctx.fill();
             
             // Pig nostrils
             ctx.fillStyle = '#FF1493';
             ctx.beginPath();
-            ctx.arc(20, 8, 3, 0, Math.PI * 2);
-            ctx.arc(25, 8, 3, 0, Math.PI * 2);
+            ctx.arc(-20, 8, 3, 0, Math.PI * 2);
+            ctx.arc(-25, 8, 3, 0, Math.PI * 2);
             ctx.fill();
             
-            // Pig eyes
+            // Pig eyes (flipped positions)
             ctx.fillStyle = 'white';
             ctx.beginPath();
-            ctx.arc(-5, -5, 8, 0, Math.PI * 2);
-            ctx.arc(8, -5, 8, 0, Math.PI * 2);
+            ctx.arc(5, -5, 8, 0, Math.PI * 2);
+            ctx.arc(-8, -5, 8, 0, Math.PI * 2);
             ctx.fill();
             
             ctx.fillStyle = 'black';
             ctx.beginPath();
-            ctx.arc(-7, -6, 4, 0, Math.PI * 2);
-            ctx.arc(6, -6, 4, 0, Math.PI * 2);
+            ctx.arc(7, -6, 4, 0, Math.PI * 2);
+            ctx.arc(-6, -6, 4, 0, Math.PI * 2);
             ctx.fill();
             
-            // Pig ears
+            // Pig ears (flipped positions)
             ctx.fillStyle = '#FF69B4';
             ctx.beginPath();
-            ctx.ellipse(-15, -15, 12, 20, 0.5, 0, Math.PI * 2);
-            ctx.ellipse(15, -15, 12, 20, -0.5, 0, Math.PI * 2);
+            ctx.ellipse(15, -15, 12, 20, 0.5, 0, Math.PI * 2);
+            ctx.ellipse(-15, -15, 12, 20, -0.5, 0, Math.PI * 2);
             ctx.fill();
             
-            // Pig tail
+            // Pig tail (now on LEFT side due to flip)
             ctx.strokeStyle = '#FF69B4';
             ctx.lineWidth = 4;
             ctx.beginPath();
-            ctx.moveTo(-25, 5);
-            ctx.quadraticCurveTo(-40, -10, -35, -20);
+            ctx.moveTo(25, 5);
+            ctx.quadraticCurveTo(40, -10, 35, -20);
             ctx.stroke();
             
             ctx.restore();
