@@ -606,63 +606,106 @@
             });
         }
         
-        // Draw pig facing RIGHT (flipped version)
+        // Draw a PROPER PIG facing RIGHT (recognizable pig design)
         function drawPig() {
             ctx.save();
             ctx.translate(pig.x, pig.y);
             
-            // FLIP HORIZONTALLY to face right
-            ctx.scale(-1, 1);
-            
-            // Calculate rotation based on velocity (negated for flip)
+            // Apply rotation based on velocity for natural tilt
             pig.rotation = pig.velocity * 0.1;
-            ctx.rotate(-pig.rotation);
+            ctx.rotate(pig.rotation);
             
-            // Pig body
-            ctx.fillStyle = '#FFB6C1';
+            // === PIG BODY (round pink body) ===
+            ctx.fillStyle = '#FFB6C1'; // Light pink
             ctx.beginPath();
             ctx.ellipse(0, 0, pig.width/2, pig.height/2, 0, 0, Math.PI * 2);
             ctx.fill();
             
-            // Pig snout (now on RIGHT side due to flip)
-            ctx.fillStyle = '#FF69B4';
+            // === PIG SNOUT (distinct nose area on RIGHT side) ===
+            ctx.fillStyle = '#FF69B4'; // Medium pink
             ctx.beginPath();
-            ctx.ellipse(-15, 5, 18, 12, 0, 0, Math.PI * 2);
+            ctx.ellipse(20, 3, 18, 14, 0, 0, Math.PI * 2); // Positioned on right side
             ctx.fill();
             
-            // Pig nostrils
-            ctx.fillStyle = '#FF1493';
+            // === PIG NOSE (dark pink nostrils) ===
+            ctx.fillStyle = '#FF1493'; // Dark pink
             ctx.beginPath();
-            ctx.arc(-20, 8, 3, 0, Math.PI * 2);
-            ctx.arc(-25, 8, 3, 0, Math.PI * 2);
+            ctx.ellipse(23, 5, 5, 4, 0, 0, Math.PI * 2); // Left nostril
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(28, 5, 5, 4, 0, 0, Math.PI * 2); // Right nostril
             ctx.fill();
             
-            // Pig eyes (flipped positions)
+            // === PIG EYES (expressive with eyelashes) ===
+            // Left eye (closer to body)
             ctx.fillStyle = 'white';
             ctx.beginPath();
-            ctx.arc(5, -5, 8, 0, Math.PI * 2);
-            ctx.arc(-8, -5, 8, 0, Math.PI * 2);
+            ctx.arc(-8, -7, 7, 0, Math.PI * 2);
             ctx.fill();
-            
             ctx.fillStyle = 'black';
             ctx.beginPath();
-            ctx.arc(7, -6, 4, 0, Math.PI * 2);
-            ctx.arc(-6, -6, 4, 0, Math.PI * 2);
+            ctx.arc(-9, -8, 3.5, 0, Math.PI * 2);
             ctx.fill();
             
-            // Pig ears (flipped positions)
-            ctx.fillStyle = '#FF69B4';
+            // Right eye (closer to snout)
+            ctx.fillStyle = 'white';
             ctx.beginPath();
-            ctx.ellipse(15, -15, 12, 20, 0.5, 0, Math.PI * 2);
-            ctx.ellipse(-15, -15, 12, 20, -0.5, 0, Math.PI * 2);
+            ctx.arc(5, -7, 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'black';
+            ctx.beginPath();
+            ctx.arc(4, -8, 3.5, 0, Math.PI * 2);
             ctx.fill();
             
-            // Pig tail (now on LEFT side due to flip)
+            // Eyelashes for cuteness
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1.5;
+            // Left eye lashes
+            for (let i = -1; i <= 1; i++) {
+                ctx.beginPath();
+                ctx.moveTo(-8 + i*3, -14);
+                ctx.lineTo(-8 + i*3, -11);
+                ctx.stroke();
+            }
+            // Right eye lashes
+            for (let i = -1; i <= 1; i++) {
+                ctx.beginPath();
+                ctx.moveTo(5 + i*3, -14);
+                ctx.lineTo(5 + i*3, -11);
+                ctx.stroke();
+            }
+            
+            // === PIG EARS (floppy ears on top) ===
+            ctx.fillStyle = '#FF69B4'; // Medium pink
+            
+            // Left ear (back ear)
+            ctx.beginPath();
+            ctx.ellipse(-15, -18, 12, 18, -0.3, 0, Math.PI * 1.8);
+            ctx.fill();
+            
+            // Right ear (front ear)
+            ctx.beginPath();
+            ctx.ellipse(8, -18, 12, 18, 0.3, 0, Math.PI * 1.8);
+            ctx.fill();
+            
+            // Inner ear details
+            ctx.fillStyle = '#FFB6C1';
+            ctx.beginPath();
+            ctx.ellipse(-15, -18, 8, 12, -0.3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(8, -18, 8, 12, 0.3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // === PIG TAIL (curly tail on LEFT side - classic pig feature!) ===
             ctx.strokeStyle = '#FF69B4';
-            ctx.lineWidth = 4;
+            ctx.lineWidth = 3.5;
+            ctx.lineCap = 'round';
             ctx.beginPath();
-            ctx.moveTo(25, 5);
-            ctx.quadraticCurveTo(40, -10, 35, -20);
+            // Draw a cute spiral tail on the LEFT side of the body
+            ctx.moveTo(-22, 2);
+            ctx.bezierCurveTo(-28, -5, -35, -2, -32, 6);
+            ctx.bezierCurveTo(-29, 12, -22, 10, -20, 6);
             ctx.stroke();
             
             ctx.restore();
@@ -742,11 +785,11 @@
                     audio.volume = 0.3;
                     break;
                 case 'score':
-                    audio = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');
+                    audio = new Audio('audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');
                     audio.volume = 0.2;
                     break;
                 case 'hit':
-                    audio = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');
+                    audio = new Audio('audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=');
                     audio.volume = 0.4;
                     break;
                 default:
